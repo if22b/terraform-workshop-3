@@ -1,0 +1,29 @@
+name: 'Terraform Destroy'
+
+# Trigger the workflow manually
+on:
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    name: 'Terraform Destroy'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 'Checkout Code'
+      uses: actions/checkout@v3
+
+    - name: 'Set up Terraform'
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: 'Terraform Init'
+      run: terraform init
+
+    - name: 'Terraform Destroy'
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      run: terraform destroy -auto-approve
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
