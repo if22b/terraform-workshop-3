@@ -1,23 +1,23 @@
 name: 'Terraform Apply'
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Trigger the workflow manually
 
 jobs:
   terraform:
-    name: 'Terraform Apply'
-    runs-on: ubuntu-latest
+    name: 'Terraform Apply' # Job to apply Terraform config
+    runs-on: ubuntu-latest # Use the latest Ubuntu runner
 
     steps:
     - name: 'Checkout Code'
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3 # Fetch the repo code
 
     - name: 'Set up Terraform'
-      uses: hashicorp/setup-terraform@v2
+      uses: hashicorp/setup-terraform@v2 # Install and configure Terraform CLI
       with:
-        terraform_wrapper: false
+        terraform_wrapper: false # Disable the default Terraform wrapper for direct control
 
-    - name: 'Configure AWS CLI'
+    - name: 'Configure AWS CLI' # Configure the creds
       run: |
         aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -27,10 +27,10 @@ jobs:
         fi
 
     - name: 'Terraform Init'
-      run: terraform init
+      run: terraform init # Initialize Terraform to set up the backend
 
     - name: 'Terraform Plan'
-      run: terraform plan -out=tfplan
+      run: terraform plan -out=tfplan # Generate a plan and save it to a file for later
 
     - name: 'Terraform Apply'
-      run: terraform apply -auto-approve tfplan
+      run: terraform apply -auto-approve tfplan # Apply the plan to create and update resources
