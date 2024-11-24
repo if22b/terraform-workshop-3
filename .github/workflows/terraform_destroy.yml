@@ -1,23 +1,23 @@
 name: 'Terraform Destroy'
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Trigger the workflow manually
 
 jobs:
   terraform:
-    name: 'Terraform Destroy'
-    runs-on: ubuntu-latest
+    name: 'Terraform Destroy' # Job to destroy Terraform resources
+    runs-on: ubuntu-latest # Use latest Ubuntu runner
 
     steps:
     - name: 'Checkout Code'
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3 # Fetch the repo code
 
     - name: 'Set up Terraform'
-      uses: hashicorp/setup-terraform@v2
+      uses: hashicorp/setup-terraform@v2 # Install and configure Terraform CLI
       with:
-        terraform_wrapper: false
+        terraform_wrapper: false # # Disable the default Terraform wrapper for direct control
 
-    - name: 'Configure AWS CLI'
+    - name: 'Configure AWS CLI' # Configure the AWS creds 
       run: |
         aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -27,7 +27,7 @@ jobs:
         fi
 
     - name: 'Terraform Init'
-      run: terraform init
+      run: terraform init # Initialize Terraform to load the remote backend and modules
 
     - name: 'Terraform Destroy'
-      run: terraform destroy -auto-approve
+      run: terraform destroy -auto-approve # Destroy all Terraform resources
