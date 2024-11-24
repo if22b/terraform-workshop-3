@@ -1,3 +1,12 @@
+terraform {
+  backend "s3" {
+    bucket         = "trrfrm-bucket"
+    key            = "terraform/workshop3/terraform.tfstate" # File path in the bucket
+    region         = "us-east-1"
+    encrypt        = true 
+  }
+}
+
 # Provider configuration
 provider "aws" {
   region     = "us-east-1"
