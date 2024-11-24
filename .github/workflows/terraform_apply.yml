@@ -29,19 +29,8 @@ jobs:
     - name: 'Terraform Init'
       run: terraform init
 
-    - name: 'Terraform Validate'
-      run: terraform validate
-
     - name: 'Terraform Plan'
       run: terraform plan -out=tfplan
 
     - name: 'Terraform Apply'
       run: terraform apply -auto-approve tfplan
-
-    - name: 'Upload Terraform State'
-      uses: actions/upload-artifact@v3
-      with:
-        name: terraform-state
-        path: |
-          terraform.tfstate
-          .terraform.lock.hcl
