@@ -44,4 +44,4 @@ jobs:
         name: terraform-state
         path: |
           terraform.tfstate
-          .terraform/
+          .terraform.lock.hcl
